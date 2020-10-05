@@ -12,9 +12,9 @@ export interface ProductState{
     prodcuts: Product[]
 }
 
-export const prodcutReducer =  createReducer(
-    { showProductCode: true },
-    on(createAction('[Product] Toggle Product Code'),state =>{
+export const prodcutReducer =  createReducer<ProductState>(
+    { showProductCode: true} as ProductState,
+    on(createAction('[Product] Toggle Product Code'),(state: ProductState) =>{
         console.log('oriignal state: ' + JSON.stringify(state));
         return {
             ...state,
