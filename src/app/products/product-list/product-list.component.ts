@@ -5,7 +5,8 @@ import { Subscription } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { ProductState, State } from '../state/product.reducer';
+import { getShowProductCode, ProductState, State } from '../state/product.reducer';
+import * as ProductActions from '../state/product.action';
 
 @Component({
   selector: 'pm-product-list',
@@ -36,8 +37,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
       error: err => this.errorMessage = err
     });
 
-    this.store.select('products').subscribe(
-      products => this.displayCode = products.showProductCode
+    this.store.select(getShowProductCode).subscribe(
+      ShowProductCode => this.displayCode = ShowProductCode
     )
   }
 
@@ -48,7 +49,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   checkChanged(): void {
    // this.displayCode = !this.displayCode;
    this.store.dispatch(
-     { type: '[Product] Toggle Product Code'}
+    ProductActions.toggleProductCode()
    )
   }
 
