@@ -70,5 +70,11 @@ export const prodcutReducer =  createReducer<ProductState>(
                 starRating: 0
               }
         }
+    }),
+    on(ProductActions.loadProductsSuccess, (state,action): ProductState => {
+        return {
+            ... state,
+            prodcuts: action.products
+        }
     })    
 )
