@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { getCurrentProduct, getShowProductCode, ProductState, State } from '../state/product.reducer';
+import { getCurrentProduct, getProducts, getShowProductCode, ProductState, State } from '../state/product.reducer';
 import * as ProductActions from '../state/product.action';
 
 @Component({
@@ -24,6 +24,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
   sub: Subscription;
+  products$: Observable<Product[]>;
 
   constructor(private productService: ProductService, private store: Store<State> ) { }
 
@@ -32,10 +33,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       currentProduct => this.selectedProduct = currentProduct
     );
 
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => this.products = products,
-      error: err => this.errorMessage = err
-    });
+    this.products$= this.store.select(getProducts);
 
     this.store.select(getShowProductCode).subscribe(
       ShowProductCode => this.displayCode = ShowProductCode
